@@ -1,31 +1,38 @@
 (function() {
-  var width = 420,
-      barHeight = 20;
+  var width = 960,
+      height = 500;
 
-  var xScale = d3.scaleLinear()
-    .range([0, width]);
+  var yScale = d3.scaleLinear()
+    .range([height, 0]);
+
+  var xScale = d3.scaleBand()
+    .rangeRound([0, width])
+    .padding(0.025);
 
   var chart = d3.select(".chart")
-    .attr("width", width);
+    .attr("width", width)
+    .attr("height", height);
 
   d3.tsv("data.tsv", type, function(error, data) {
-    xScale.domain([0, d3.max(data, function(d) { return d.value; })]);
+    xScale.domain(data.map(function(d) { return d.name; }));
+    yScale.domain([0, d3.max(data, function(d) { return d.value; })]);
 
-    chart.attr("height", barHeight * data.length);
+    var barWidth = width / data.length;
 
     var bar = chart.selectAll("g")
       .data(data)
       .enter().append("g")
-      .attr("transform", function(d, i) { return "translate(0," + i * barHeight + ")"; });
+      .attr("transform", function(d, i) { return "translate(" + xScale(d.name) + ",0)"; });
 
     bar.append("rect")
-      .attr("width", function(d) { return xScale(d.value); })
-      .attr("height", barHeight - 1);
+      .attr("y", function(d) { return yScale(d.value); })
+      .attr("height", function(d) { return height - yScale(d.value); })
+      .attr("width", xScale.bandwidth());
 
     bar.append("text")
-      .attr("x", function(d) { return xScale(d.value) - 3; })
-      .attr("y", barHeight / 2)
-      .attr("dy", ".35em")
+      .attr("x", barWidth / 2)
+      .attr("y", function(d) { return yScale(d.value) + 3; })
+      .attr("dy", ".75em")
       .text(function(d) { return d.value; });
   });
 
