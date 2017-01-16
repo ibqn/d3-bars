@@ -5,19 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <style type="text/css">
-    .chart div {
+    .chart rect {
+      fill: steelblue;
+    }
+
+    .chart text {
+      fill: white;
       font: 10px sans-serif;
-      background-color: steelblue;
-      text-align: right;
-      padding: 3px;
-      margin: 1px;
-      color: white;
+      text-anchor: end;
     }
   </style>
   <title>D3 Example</title>
 </head>
 <body>
-  <div class="chart"></div>
+  <svg class="chart"></svg>
 </body>
 <script src="node_modules/d3/build/d3.min.js" type="application/javascript"></script>
 <script src="script.js" type="application/javascript"></script>
