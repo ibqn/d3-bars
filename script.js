@@ -17,12 +17,10 @@
     xScale.domain(data.map(function(d) { return d.name; }));
     yScale.domain([0, d3.max(data, function(d) { return d.value; })]);
 
-    var barWidth = width / data.length;
-
     var bar = chart.selectAll("g")
       .data(data)
       .enter().append("g")
-      .attr("transform", function(d, i) { return "translate(" + xScale(d.name) + ",0)"; });
+      .attr("transform", function(d) { return "translate(" + xScale(d.name) + ",0)"; });
 
     bar.append("rect")
       .attr("y", function(d) { return yScale(d.value); })
@@ -30,11 +28,15 @@
       .attr("width", xScale.bandwidth());
 
     bar.append("text")
-      .attr("x", barWidth / 2)
+      .attr("x", xScale.bandwidth() / 2)
       .attr("y", function(d) { return yScale(d.value) + 3; })
       .attr("dy", ".75em")
-      .text(function(d) { return d.value; });
+      .text(function(d) { return round(d.value, 2); });
   });
+
+  function round(num, pos) {
+    return +(Math.round(num + "e+" + pos)  + "e-" + pos);
+}
 
   function type(d) {
     d.value = +d.value; // coerce to number
