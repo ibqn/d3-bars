@@ -29,7 +29,20 @@
 
     bar.append("text")
       .attr("x", xScale.bandwidth() / 2)
-      .attr("y", function(d) { return yScale(d.value) + 3; })
+      .classed("blue", function(d) {
+        if ((height - yScale(d.value)) < 16) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .attr("y", function(d) {
+        var v = yScale(d.value),
+            s = 3;
+        if ((height - v) < 16) s = -13;
+
+        return v + s;
+      })
       .attr("dy", ".75em")
       .text(function(d) { return math.round(d.value, 4); });
   });
