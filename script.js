@@ -31,12 +31,8 @@
       .attr("x", xScale.bandwidth() / 2)
       .attr("y", function(d) { return yScale(d.value) + 3; })
       .attr("dy", ".75em")
-      .text(function(d) { return round(d.value, 2); });
+      .text(function(d) { return math.round(d.value, 4); });
   });
-
-  function round(num, pos) {
-    return +(Math.round(num + "e+" + pos)  + "e-" + pos);
-}
 
   function type(d) {
     d.value = +d.value; // coerce to number
