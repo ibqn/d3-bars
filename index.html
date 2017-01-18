@@ -15,6 +15,11 @@
       text-anchor: middle;
     }
 
+    .chart text.axis {
+      fill: #000;
+      font: 10px sans-serif;
+    }
+
     .chart text.blue.bars {
       fill: steelblue;
     }
@@ -22,7 +27,7 @@
   <title>D3 Example</title>
 </head>
 <body>
-  <svg class="chart"></svg>
+  <svg class="chart" width="960" height="500"></svg>
 </body>
 <script src="node_modules/d3/build/d3.min.js" type="application/javascript"></script>
 <script src="node_modules/mathjs/dist/math.min.js" type="application/javascript"></script>

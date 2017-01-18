@@ -1,7 +1,14 @@
 (function() {
-  var margin = {top: 20, right: 30, bottom: 30, left: 40},
-      width = 960 - margin.left - margin.right,
-      height = 500 - margin.top - margin.bottom;
+  var margin = {top: 20, right: 30, bottom: 30, left: 40};
+
+  var svg = d3.select(".chart"),
+      svgWidth  = +svg.attr("width"),
+      svgHeight = +svg.attr("height"),
+      width = svgWidth - margin.left - margin.right,
+      height = svgHeight - margin.top - margin.bottom;
+
+  var chart = svg.append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   var yScale = d3.scaleLinear()
     .range([height, 0]);
@@ -9,13 +16,6 @@
   var xScale = d3.scaleBand()
     .rangeRound([0, width])
     .padding(0.025);
-
-  var chart = d3.select(".chart")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
 
   d3.tsv("data.tsv", type, function(error, data) {
     if (error) throw error;
@@ -64,7 +64,14 @@
 
     // Add the y Axis
     chart.append("g")
-      .call(yAxis);
+      .call(yAxis)
+      .append("text")
+      .classed('axis', true)
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("Frequency");
   });
 
   function type(d) {
