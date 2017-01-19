@@ -23,13 +23,25 @@
     .chart text.blue.bars {
       fill: steelblue;
     }
+
+    .blend-circle {
+      mix-blend-mode: multiply;
+    }
   </style>
   <title>D3 Example</title>
 </head>
 <body>
-  <svg class="chart" width="960" height="500"></svg>
+  <section>
+    <h1>Bar chart</h1>
+    <svg class="chart" width="960" height="500"></svg>
+  </section>
+  <section>
+    <h1>Circles</h1>
+    <svg class="circles" width="300" height="300"></svg>
+  </section>
 </body>
 <script src="node_modules/d3/build/d3.min.js" type="application/javascript"></script>
+<script src="node_modules/d3-selection-multi/build/d3-selection-multi.min.js" type="application/javascript"></script>
 <script src="node_modules/mathjs/dist/math.min.js" type="application/javascript"></script>
 <script src="script.js" type="application/javascript"></script>
 </html>
