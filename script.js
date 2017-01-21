@@ -191,9 +191,6 @@
         if (!contains('.' + parentElement.classList[i], selectorTextArr))
           selectorTextArr.push('.' + parentElement.classList[i]);
 
-      console.log('1:');
-      console.log(selectorTextArr);
-
       // Add Children element Ids and Classes to the list
       var nodes = parentElement.getElementsByTagName("*");
       for (i = 0; i < nodes.length; i++) {
@@ -206,9 +203,6 @@
           if (!contains( '.' + classes[j], selectorTextArr))
             selectorTextArr.push('.' + classes[j]);
       }
-
-      console.log('2:');
-      console.log(selectorTextArr);
 
       // Extract CSS Rules
       var extractedCSSText = "";
@@ -224,9 +218,6 @@
 
         var cssRules = s.cssRules;
 
-        console.log('r:');
-        console.log(cssRules);
-
         for (i = 0; i < cssRules.length; i++)
           for (j = 0; j < selectorTextArr.length; j++)
             if (contains(selectorTextArr[j], cssRules[i].selectorText)) {
@@ -234,9 +225,6 @@
               continue;
             }
       }
-
-      console.log('extract:');
-      console.log(extractedCSSText);
 
       return extractedCSSText;
 
