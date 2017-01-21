@@ -26,7 +26,9 @@
     var bar = chart.selectAll("g")
       .data(data)
       .enter().append("g")
-      .attr("transform", function(d) { return "translate(" + xScale(d.name) + ",0)"; });
+      .attr("transform", function(d) {
+        return "translate(" + xScale(d.name) + ",0)";
+      });
 
     bar.append("rect")
       .attr("y", function(d) { return yScale(d.value); })
@@ -88,13 +90,12 @@
 
   // Let's create a mock visualization
   var circleSizeMax = 15;
-  var rMax = math.min(width, height)/2 - circleSizeMax;
+  var rMax = math.min(width, height) / 2 - circleSizeMax;
 
-
-  var radius 	= d3.scaleLinear().range([0, rMax]);
-  var angle 	= d3.scaleLinear().range([0,2 * math.pi]);
-  var size 	= d3.scaleLinear().range([0, circleSizeMax]);
-  var color 	= d3.scaleOrdinal().range([
+  var radius   = d3.scaleLinear().range([0, rMax]);
+  var angle   = d3.scaleLinear().range([0,2 * math.pi]);
+  var size     = d3.scaleLinear().range([0, circleSizeMax]);
+  var color   = d3.scaleOrdinal().range([
     '#fcfb3c','#fcf900','#ff825a','#ffd2cb','#71d362',
     '#ffd16f','#ff3d5d','#ff7218','#04b3f3','#bce5ac',
     '#6e0215','#69D2E7','#A7DBDB','#E0E4CC','#F38630',
@@ -119,8 +120,8 @@
     '#68A8AD','#C4D4AF','#AF97C2','#0A656E','#EEAA33',
   ]);
 
-  var x = function(d) { return radius(d.r) * Math.cos(angle(d.angle)); };
-  var y = function(d) { return radius(d.r) * Math.sin(angle(d.angle)); };
+  var x = function(d) { return radius(d.r) * math.cos(angle(d.angle)); };
+  var y = function(d) { return radius(d.r) * math.sin(angle(d.angle)); };
 
   var chart = svg.append('g')
     .attr('transform', 'translate(' + [width / 2, height / 2] + ')');
@@ -134,7 +135,8 @@
   });
 
   chart.selectAll('g')
-    .data(data).enter()
+    .data(data)
+    .enter()
     .append('circle')
     .attr('class', 'blend-circle')
     .attrs({
@@ -143,4 +145,140 @@
       r: function(d) { return size(d.size); },
       fill: function(d, i) { return color(i); }
   });
+})();
+
+
+
+(function() {
+  // Set-up the export button
+  d3.selectAll('.saveLink').on('click', function() {
+    var chart = d3.select('.chart');
+    var width = +chart.attr('width');
+    var height = +chart.attr('height');
+    var svgString = getSVGString(chart.node());
+    // passes Blob and filesize String to the callback
+    svgString2Image(svgString, 2 * width, 2 * height, 'png', save);
+
+    function save(dataBlob, filesize) {
+      saveAs(dataBlob, 'D3 vis exported to PNG.png'); // FileSaver.js function
+    }
+  });
+
+  // Below are the function that handle actual exporting:
+  // getSVGString(svgNode) and
+  // svgString2Image(svgString, width, height, format, callback)
+  function getSVGString(svgNode) {
+    var i, j;
+    svgNode.setAttribute('xlink', 'http://www.w3.org/1999/xlink');
+    var cssStyleText = getCSSStyles(svgNode);
+    appendCSS(cssStyleText, svgNode);
+
+    var serializer = new XMLSerializer();
+    var svgString = serializer.serializeToString(svgNode);
+    // Fix root xlink without namespace
+    svgString = svgString.replace(/(\w+)?:?xlink=/g, 'xmlns:xlink=');
+    // Safari NS namespace fix
+    svgString = svgString.replace(/NS\d+:href/g, 'xlink:href');
+
+    return svgString;
+
+    function getCSSStyles(parentElement) {
+      var selectorTextArr = [];
+
+      // Add Parent element Id and Classes to the list
+      selectorTextArr.push('#' + parentElement.id);
+      for (i = 0; i < parentElement.classList.length; i++)
+        if (!contains('.' + parentElement.classList[i], selectorTextArr))
+          selectorTextArr.push('.' + parentElement.classList[i]);
+
+      console.log('1:');
+      console.log(selectorTextArr);
+
+      // Add Children element Ids and Classes to the list
+      var nodes = parentElement.getElementsByTagName("*");
+      for (i = 0; i < nodes.length; i++) {
+        var id = nodes[i].id;
+        if (!contains('#' + id, selectorTextArr))
+          selectorTextArr.push('#' + id);
+
+        var classes = nodes[i].classList;
+        for (j = 0; j < classes.length; j++)
+          if (!contains( '.' + classes[j], selectorTextArr))
+            selectorTextArr.push('.' + classes[j]);
+      }
+
+      console.log('2:');
+      console.log(selectorTextArr);
+
+      // Extract CSS Rules
+      var extractedCSSText = "";
+      for (i = 0; i < document.styleSheets.length; i++) {
+        var s = document.styleSheets[i];
+
+        try {
+          if (!s.cssRules) continue;
+        } catch( e ) {
+          if (e.name !== 'SecurityError') throw e; // for Firefox
+          continue;
+        }
+
+        var cssRules = s.cssRules;
+
+        console.log('r:');
+        console.log(cssRules);
+
+        for (i = 0; i < cssRules.length; i++)
+          for (j = 0; j < selectorTextArr.length; j++)
+            if (contains(selectorTextArr[j], cssRules[i].selectorText)) {
+              extractedCSSText += cssRules[i].cssText;
+              continue;
+            }
+      }
+
+      console.log('extract:');
+      console.log(extractedCSSText);
+
+      return extractedCSSText;
+
+      function contains(str, arr) {
+        return arr.indexOf( str ) !== -1;
+      }
+    }
+
+    function appendCSS(cssText, element) {
+      var styleElement = document.createElement("style");
+      styleElement.setAttribute("type", "text/css");
+      styleElement.innerHTML = cssText;
+      var refNode = element.hasChildNodes() ? element.children[0] : null;
+      element.insertBefore(styleElement, refNode);
+    }
+  }
+
+  function svgString2Image(svgString, width, height, format, callback) {
+    format = format ? format : 'png';
+
+    var imgsrc = (
+      'data:image/svg+xml;base64,' +
+      btoa(unescape(encodeURIComponent(svgString)))
+    ); // Convert SVG string to dataurl
+
+    var canvas = document.createElement("canvas");
+    var context = canvas.getContext("2d");
+
+    canvas.width = width;
+    canvas.height = height;
+
+    var image = new Image();
+    image.onload = function() {
+      context.clearRect(0, 0, width, height);
+      context.drawImage(image, 0, 0, width, height);
+
+      canvas.toBlob(function(blob) {
+        var filesize = math.round(blob.length / 1024) + ' KB';
+        if (callback) callback(blob, filesize);
+      });
+    };
+
+    image.src = imgsrc;
+  }
 })();

@@ -27,12 +27,18 @@
     .blend-circle {
       mix-blend-mode: multiply;
     }
+
+    a {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
   </style>
   <title>D3 Example</title>
 </head>
 <body>
   <section>
-    <h1>Bar chart</h1>
+    <a class='saveLink'><h1>Bar chart</h1></a>
     <svg class="chart" width="960" height="500"></svg>
   </section>
   <section>
@@ -43,5 +49,7 @@
 <script src="node_modules/d3/build/d3.min.js" type="application/javascript"></script>
 <script src="node_modules/d3-selection-multi/build/d3-selection-multi.min.js" type="application/javascript"></script>
 <script src="node_modules/mathjs/dist/math.min.js" type="application/javascript"></script>
+<script src="node_modules/blueimp-canvas-to-blob/js/canvas-to-blob.min.js" type="application/javascript"></script>
+<script src="node_modules/filesaver.js/FileSaver.min.js" type="application/javascript"></script>
 <script src="script.js" type="application/javascript"></script>
 </html>

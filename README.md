@@ -7,3 +7,4 @@
 npm install
 npm start
 ```
+![D3 Chart Bars](d3-chart-bars.png)

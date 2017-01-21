@@ -10,8 +10,10 @@
   "author": "ibqn",
   "license": "ISC",
   "dependencies": {
+    "blueimp-canvas-to-blob": "^3.6.0",
     "d3": "^4.4.1",
     "d3-selection-multi": "^1.0.0",
+    "filesaver.js": "^0.2.0",
     "lite-server": "^2.2.2",
     "mathjs": "^3.8.1"
   }
