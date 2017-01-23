@@ -5,16 +5,26 @@
   "repository": "ibqn/d3-bars",
   "main": "index.js",
   "scripts": {
-    "start": "lite-server"
+    "start": "tsc && concurrently \"tsc -w\" \"lite-server\" ",
+    "lint": "tslint *.ts -t verbose",
+    "lite": "lite-server",
+    "tsc": "tsc",
+    "tsc:w": "tsc -w"
   },
   "author": "ibqn",
   "license": "ISC",
   "dependencies": {
+    "@types/d3": "^4.4.1",
+    "@types/d3-selection-multi": "^1.0.4",
+    "@types/mathjs": "0.0.33",
     "blueimp-canvas-to-blob": "^3.6.0",
+    "concurrently": "^3.1.0",
     "d3": "^4.4.1",
     "d3-selection-multi": "^1.0.0",
     "filesaver.js": "^0.2.0",
     "lite-server": "^2.2.2",
-    "mathjs": "^3.8.1"
+    "mathjs": "^3.8.1",
+    "tslint": "^4.3.1",
+    "typescript": "^2.1.5"
   }
 }
