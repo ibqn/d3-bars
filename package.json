@@ -14,17 +14,17 @@
   "author": "ibqn",
   "license": "ISC",
   "dependencies": {
-    "@types/d3": "^4.4.1",
-    "@types/d3-selection-multi": "^1.0.4",
-    "@types/mathjs": "0.0.33",
+    "@types/d3": "^4.9.0",
+    "@types/d3-selection-multi": "^1.0.5",
+    "@types/mathjs": "^0.0.34",
     "blueimp-canvas-to-blob": "^3.6.0",
     "concurrently": "^3.1.0",
-    "d3": "^4.4.1",
+    "d3": "^4.9.1",
     "d3-selection-multi": "^1.0.0",
     "filesaver.js": "^0.2.0",
-    "lite-server": "^2.2.2",
+    "lite-server": "^2.3.0",
     "mathjs": "^3.8.1",
     "tslint": "^4.3.1",
-    "typescript": "^2.1.5"
+    "typescript": "^2.3.3"
   }
 }
